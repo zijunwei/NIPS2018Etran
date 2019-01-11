@@ -80,8 +80,10 @@
 %\usepackage{color}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-
-
+\usepackage{bbm}
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}
 
 
 
@@ -523,15 +525,17 @@ To sum up, the major contributions of this paper are:
 %    \item Perhaps also consider extending the video summarization work to use more prestigious datasets.
 %\end{enumerate}  
 %}
-An earlier conference version of this paper was presented in NeurIPS~2019~\cite{m_Wei-etal-NIPS18}. This paper extends the earlier version in several ways:
+An earlier conference version of this paper was presented in NeurIPS~2018~\cite{m_Wei-etal-NIPS18}. This paper extends the earlier version in several ways:
 
-\added[id=MH]{List some major additions here}. 
+%\added[id=MH]{List some major additions here}. %
 
-\begin{itemize}
-    \item We analyzed the matching strategy adopted in our work for matching target segments with detected segments and compare it to the alternatives to demonstrate the effectiveness.
-    \item We applied \S2N to a third application, video highlighting, and achieved state-of-the-art performance;
-    \item We extensively analyzed \S2N on the video temporal action proposal task and modified the inference stage of \S2N with beam search to enable more diverse outputs. We show that under the with modified inference, \S2N outperforms the state-of-the-art models by a significant margin.
-\end{itemize}
+\begin{enumerate}
+    \item We apply \S2N to a new application, the video highlighting, and show that \
+S2N achieves state-of-the-art performance;
+    \item We conduct thorough analysis on the HMLC, the matching strategy we propose to use in our work for assigning detected segments to the targets;
+    \item We propose a simple and yet effective beam-search approach to make \S2N generating more diversified detections. We show that with this modification the \S2N further advances the performance in the temporal action proposal task.
+    %outperforms the state-of-the-art models by a significant margin.
+\end{enumerate}
 
 
 \section{Related Work}
@@ -546,7 +550,7 @@ Recurrent Neural Networks (RNNs) have been the standard method for learning func
 \subsection{Video Highlight Detection \& Video Summarization \& Temporal Action Proposal}
 %}
 
-\added[id=ZJ]{Not done yet.}
+%\added[id=ZJ]{Not done yet.}%
 
 \myheading{Video Highlight Detection}
 Video highlight detection focus on detecting temporal clips which contain the most salient event. Most early highlight detection works focus on
