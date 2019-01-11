@@ -305,19 +305,25 @@
 % one-size-fits-all approach a daunting prospect. For instance, compsoc 
 % journal papers have the author affiliations above the "Manuscript
 % received ..."  text while in non-compsoc journals this is reversed. Sigh.
-
-\author{Zijun Wei, %~\IEEEmembership{Member,~IEEE,}
-        Boyu Wang,
+%~\IEEEmembership{Fellow,~OSA,}
+%~\IEEEmembership{Life~Fellow,~IEEE
+\author{Zijun Wei*, %~\IEEEmembership{Member,~IEEE,}
+        Boyu Wang*,
         Minh Hoai,~\IEEEmembership{Member,~IEEE,}
-        John~Doe,~\IEEEmembership{Fellow,~OSA,}
-        and~Jane~Doe,~\IEEEmembership{Life~Fellow,~IEEE}% <-this % stops a space
-\IEEEcompsocitemizethanks{\IEEEcompsocthanksitem M. Shell was with the Department
-of Electrical and Computer Engineering, Georgia Institute of Technology, Atlanta,
-GA, 30332.\protect\\
+        Jianming Zhang,
+        Xiaohui Shen,\\
+        Zhe Lin,
+        Radom\' ir M\v ech,
+        Dimitris Samaras,% <-this % stops a space
+\IEEEcompsocitemizethanks{
+\IEEEcompsocthanksitem * Both authors have contributed equally to this work.
+\IEEEcompsocthanksitem Zijun Wei, Boyu Wang, Minh Hoai, Dimitris Samaras were with the Department of Computer Science, Stony Brook University, Stony Brook, NY, 11794.\protect\\
 % note need leading \protect in front of \\ to get a newline within \thanks as
 % \\ is fragile and will error, could use \hfil\break instead.
-E-mail: see http://www.michaelshell.org/contact.html
-\IEEEcompsocthanksitem J. Doe and J. Doe are with Anonymous University.}% <-this % stops an unwanted space
+E-mail: \{zijwei, boywang, minhhoai, samaras\}@cs.stonybook.edu
+\IEEEcompsocthanksitem Jianming Zhang, Zhe Lin and Radom\' ir M\v ech are with Adobe Research. San Jose, CA, 95110
+\IEEEcompsocthanksitem Xiaohui Shen is with ByteDance AI Lab, Melon Park, CA, 94025
+}% <-this % stops an unwanted space
 \thanks{Manuscript received April 19, 2005; revised August 26, 2015.}}
 
 % note the % following the last \IEEEmembership and also \thanks - 
@@ -381,7 +387,7 @@ E-mail: see http://www.michaelshell.org/contact.html
 % in the abstract or keywords.
 \IEEEtitleabstractindextext{%
 \begin{abstract}
-Detecting segments of interest from videos is a common problem for many applications. And yet it is a challenging problem as it often requires not only knowledge of individual target segments, but also contextual understanding of the entire video and the relationships between the target segments.  To address this problem, we propose the Sequence-to-Segments Network (S2N), a novel and general end-to-end sequential encoder-decoder architecture. \S2N first encodes the input video into a sequence of hidden states that captures the progressive information of the video. It then employs a novel decoding architecture, called Segment Detection Unit (SDU) that sequentially detects segments. At each decoding step, SDU integrates the decoder state and encoder hidden states to detect a target segment.  During training, we address the problem of finding the best assignment of predicted segments to ground truth using Hungarian Matching with Lexicographic Comparison. Additionally we propose to use the Squared Earth Mover's Distance to optimize the localization errors of segments.  We show the state-of-the-art performance of \S2N across a myriad of tasks, including video highlighting, video summarization, and human action proposal generation.
+Detecting segments of interest from videos is a common problem for many applications. And yet it is a challenging problem as it often requires not only knowledge of individual target segments, but also contextual understanding of the entire video and the relationships between the target segments.  To address this problem, we propose the Sequence-to-Segments Network (S2N), a novel and general end-to-end sequential encoder-decoder architecture. \S2N first encodes the input video into a sequence of hidden states that captures the progressive information of the video. It then employs a novel decoding architecture, called Segment Detection Unit (SDU) that sequentially detects segments. At each decoding step, SDU integrates the decoder state and encoder hidden states to detect a target segment.  During training, we address the problem of finding the best assignment of predicted segments to ground truth using Hungarian Matching with Lexicographic Comparison. Additionally we propose to use the Earth Mover's Distance to optimize the localization errors of segments.  We show the state-of-the-art performance of \S2N across a myriad of tasks, including video highlighting, video summarization, and human action proposal generation.
 
 %  and \added[id=ZJ]{thoroughly analyze the behavior of \S2N trained with this matching and its variants}.
 
@@ -393,7 +399,8 @@ Detecting segments of interest from videos is a common problem for many applicat
 
 % Note that keywords are not normally used for peerreview papers.
 \begin{IEEEkeywords}
-Computer Society, IEEE, IEEEtran, journal, \LaTeX, paper, template.
+Segment detection, video analysis, video summarization, video highlighting, video  temporal action proposal
+%Computer Society, IEEE, IEEEtran, journal, \LaTeX, paper, template.
 \end{IEEEkeywords}}
 
 
@@ -507,7 +514,7 @@ We learn an \S2N by alternating between assigning multiple detected segments wit
 
 % is critical for \S2N to generate high quality segments and better induces our expected output during training than.
 
-In addition, we use the Squared Earth Mover's Distance loss that accounts for the localization error to train the boundary pointing modules of the SDU.
+In addition, we use the Earth Mover's Distance loss that accounts for the localization error to train the boundary pointing modules of the SDU.
 
 To sum up, the major contributions of this paper are: 
 
@@ -525,15 +532,16 @@ To sum up, the major contributions of this paper are:
 %    \item Perhaps also consider extending the video summarization work to use more prestigious datasets.
 %\end{enumerate}  
 %}
-An earlier conference version of this paper was presented in NeurIPS~2018~\cite{m_Wei-etal-NIPS18}. This paper extends the earlier version in several ways:
+An earlier conference version of this paper was presented in NeurIPS~2018~\cite{m_Wei-etal-NIPS18}. This paper majorly extends the earlier version in several ways:
 
 %\added[id=MH]{List some major additions here}. %
 
 \begin{enumerate}
     \item We apply \S2N to a new application, the video highlighting, and show that \
 S2N achieves state-of-the-art performance;
-    \item We conduct thorough analysis on the HMLC, the matching strategy we propose to use in our work for assigning detected segments to the targets;
-    \item We propose a simple and yet effective beam-search approach to make \S2N generating more diversified detections. We show that with this modification the \S2N further advances the performance in the temporal action proposal task.
+    \item We compare the Earth Movers Distance loss (EMD) for segment boundary localization to other popular loss functions on the video highlighting task to show the effectiveness of EMD;
+    \item We conduct thorough analysis on HMLC, the matching strategy we propose to use in our work for assigning detected segments to the targets, and perform ablation studies on the temporal action proposal task;
+    \item We analyze the performance of \S2N and propose a simple and yet effective beam-search approach to make \S2N generating more diversified detections. We show that with this modification the \S2N further advances its performance on the temporal action proposal task.
     %outperforms the state-of-the-art models by a significant margin.
 \end{enumerate}
 
@@ -706,7 +714,7 @@ Similarly, the ending position $d_n$ is determined using another independent Ptr
 %how much the segment generated at a specific output order should be counted as useful output or not.
 %We use the score $c_j$ as an indicator on how likely the output at decoding step $j$ should be considered an "valid" output. 
 
-Note the $c_n$ is only based on the hidden state and not directly using information from $\x_i$ or $\e_i$, thus this score is not directly evaluating the quality of the segment, but rather and indicator of either accepting or discarding the output at $n$. It is possible to incorporate information from $\x_i$ or $\e_i$ into $f_{score}$, but this will significantly complicate the gradient flow during train. \added[id=ZJ]{We will further explain what the score predictor captures in Sec.~\ref{sec:alternatives_intro}}
+Note the $c_n$ is only based on the hidden state and not directly using information from $\x_i$ or $\e_i$, thus this score is not directly evaluating the quality of the segment, but rather and indicator of either accepting or discarding the output at $n$. It is possible to incorporate information from $\x_i$ or $\e_i$ into $f_{score}$, but this will significantly complicate the gradient flow during train. We will further explain what the score predictor captures in Sec.~\ref{sec:analysis}.
 
 \myheading{No terminal output.} We do not design a terminal output for \S2N as in~\cite{bahdanau2014neural} because of two reasons. First, the problem we address is to output a ranked list of temporal segments of interest, which is different from the problem of sequence-to-sequence translation, in which there is a need for a terminal state. Second, by not having a terminal state, \S2N can output as many segments as needed, and later the output of score predictor could be used to select a subset of them, hence bringing flexibility to different needs in real-world problems. 
 
@@ -754,7 +762,7 @@ Note that $\mL_{loc}$ only penalizes $K$ out of the $N$ $S_n$'s, the ones that a
 
 \myheading{Loss function for localization.} Let us now explain how the loss $\mL(G_k, S_{f(k)})$ is defined. Our goal is to use a loss function that can indicate the {\em level} of discrepancy between a predicted segment and a target segment. The surface of the loss function should vary smoothly without any flat regions; flat regions have zero gradients and it will be difficult for gradient-based optimization.
 
-One way to define the localization loss is to frame the boundary localization as a multi-class classification problem and use the cross-entropy loss as in~\cite{vinyals2015pointer}.  Recall that the pointer function $g$ can be used to calculate the probability distribution over the location of the segment boundary: \emph{i.e.}, using $\{g(\h_n, \e_1), ..., g(\h_n, \e_M)\}$. However, this loss function is unsuitable for boundary localization because it is insensitive to the amount of localization error; this loss function has zero gradients when the target boundary is not close to the predicted boundary. Another alternative is to use the Mean Squared Error loss, but this loss function is also unsuitable for the same reason. 
+One way to define the localization loss is to frame the boundary localization as a multi-class classification problem and use the cross-entropy loss as in~\cite{vinyals2015pointer}.  Recall that the pointer function $g$ can be used to calculate the probability distribution over the location of the segment boundary: \emph{i.e.}, using $\{g(\h_n, \e_1), ..., g(\h_n, \e_M)\}$. However, this loss function is unsuitable for boundary localization because it is insensitive to the amount of localization error; this loss function has zero gradients when the target boundary is not close to the predicted boundary. Another alternative is to use the Mean Squared Error (L2) loss, but this loss function is also unsuitable for the same reason. 
 %because the desired localization is not a real-valued function of each hidden state with a certain amount of irreducible Gaussian noise, with constant mean and variance. 
 
 % as shown in Figure~\ref{fig:Cross-loss}. \added[id=ZJ]{L2 loss is also not enough since XXX}.
@@ -784,7 +792,7 @@ Recall that the \S2N predicts a confidence value $c_n$ at each decoding step $n$
 \begin{align}
 \mL_{conf}(S_n, \delta_n) = - \delta_n\log(c_n) -  (1- \delta_n)\log(1 - c_n).
 \end{align}
-As we will show in Sec~\ref{sec:alternatives_intro}, $c_n$ is an indicator on how likely we should accept the predict segment at $n$.
+As we will show in Sec~\ref{sec:analysis}, $c_n$ is an indicator on how likely we should accept the predict segment at $n$.
  
 
 %For some applications, such as video summarization, the desired confidence value for each segment $S_n$ is not necessary binary. In this case, we can use the $L_2$ loss function, i.e., $\mL_{conf}(S_n, \delta_n) = (c_n - \delta_n)^2$. 
@@ -806,24 +814,29 @@ $o_{kn}$ indicates whether there is significant overlapping between $G_k$ and $S
 \begin{figure*}[t]
 \centering
 
-  \begin{subfigure}[b]{0.20\textwidth}
+  \begin{subfigure}[b]{0.18\textwidth}
    	\includegraphics[width=0.9\textwidth]{figures/Matching/HMLC_example.pdf}
     \caption{\label{fig:HMLC_example}}
    \end{subfigure} 
-     \begin{subfigure}[b]{0.20\textwidth}
+     \begin{subfigure}[b]{0.18\textwidth}
    	\includegraphics[width=0.9\textwidth]{figures/Matching/Tied.pdf}
         \caption{\label{fig:tied}}
    \end{subfigure}
-  \begin{subfigure}[b]{0.20\textwidth}
+  \begin{subfigure}[b]{0.18\textwidth}
    	\includegraphics[width=0.9\textwidth]{figures/Matching/HMLC_r1.pdf}
         \caption{\label{fig:HMLC_r1}}
    \end{subfigure}   
-     \begin{subfigure}[b]{0.20\textwidth}
+     \begin{subfigure}[b]{0.18\textwidth}
    	\includegraphics[width=0.9\textwidth]{figures/Matching/HMLC_r2.pdf}
         \caption{\label{fig:HMLC_r2}}
    \end{subfigure}  
+        \begin{subfigure}[b]{0.18\textwidth}
+   	\includegraphics[width=0.9\textwidth]{figures/Matching/HMLC_r3.pdf}
+        \caption{\label{fig:HMLC_r3}}
+   \end{subfigure}  
 %    \vskip -0.1in
-   \caption{Illustration of the assignment strategy. The assignment strategy will generate highly overlapped segments with ground truth and generate true positive segments earlier than false positive ones. Given an input frame sequence (black line), assume there are three ground truth segments (A, B in red) and the \S2N generates four segments 1, 2, 3, and 4 in this order. \label{fig:HMLC-illurstration}}
+   \caption{Illustration of the HMLC assignment strategy. HMLC encourages \S2N to generate highly overlapped segments with ground truth and generate true positive segments earlier than false positive ones. Given an input frame sequence (black line), the segments in red (A, B) represent the target segments (ground truth) and the segments in blue (1, 2, ...) are the sequentially generated segments. The solid lines are assigned with ground truth and the dashed lines are false positives.
+   , the numbers also represent the output order. \label{fig:HMLC-illurstration}}
 \end{figure*}   
 
 \begin{figure*}[t]
@@ -846,7 +859,7 @@ $o_{kn}$ indicates whether there is significant overlapping between $G_k$ and $S
         \caption{TopK (3)\label{fig:TopK3M}}
    \end{subfigure}  
 %    \vskip -0.1in
-   \caption{Illustration of alternative assignment strategies. Given an input frame sequence (black line), assume there are three ground truth segments (A, B, C in red) and the \S2N generates four segments 1, 2, 3, and 4 in this order.  Different assignment strategies will assign the predicted segments to the ground truth segments differently; solid blue lines indicate matched predictions, dashed blue lines indicate unmatched predictions. (a) HMLC matching (1-A, 3-B, 4-C); (b) Fixed order matching (1-A, 2-B, 3-C); (3) Greedy matching (2-A, 3-B, 4-C);  (4) TopK matching  for $K=3$ (2-A, 3-B, 1-C)\label{fig:different-matching}}
+   \caption{Illustration of alternative assignment strategies. Given an input frame sequence (black line), assume there are three ground truth segments (A, B, C in red) and the \S2N sequentially generates four segments 1, 2, 3, and 4.  Different assignment strategies will assign the predicted segments to the ground truth segments differently; solid blue lines indicate matched predictions, dashed blue lines indicate unmatched predictions. (a) HMLC matching (1-A, 3-B, 4-C); (b) Fixed order matching (1-A, 2-B, 3-C); (3) Greedy matching (2-A, 3-B, 4-C);  (4) TopK matching  for $K=3$ (2-A, 3-B, 1-C)\label{fig:different-matching}}
 \end{figure*}   
 
 \begin{equation}
@@ -866,7 +879,8 @@ The Hungarian algorithm first maximizes the total number of matches (i.e., using
 \subsection{Analysis\label{sec:analysis} of Assignment Strategies}
 Designing an appropriate assignment strategy is crucial for guiding \S2N to generate meaningful results in expected order. For many applications, we want the \S2N to: (1) generate segments that have high overlap with the ground truth, and (2) generate true positive segments earlier than false positive ones. In this section, through some examples, we will illustrate how the proposed assignment strategy will satisfy these desired criteria. 
 
-Let us start with a situation shown in Figure~\ref{fig:HMLC_example}, in which the black line at the bottom is an input sequence, the red lines $A$ and $B$ are two ground truth segments. Assume for now \S2N outputs four segments: 1, 2, 3 and 4, in that order. In this example, the pairwise matching scores between the predicted segments 1, 2, 3, 4 to target segments A and B are shown in Table~\ref{tab:HMLC}. 
+Let us start with a situation shown in Figure~(\ref{fig:HMLC_example}), in which the black line at the bottom is an input sequence, the red lines $A$ and $B$ are two ground truth segments. Assume for now \S2N outputs sequentially four segments: 1, 2, 3 and 4, in that order. In this example, assume Table~\ref{tab:HMLC} represents the pairwise matching scores between the predicted segments 1, 2, 3, 4 to target segments A and B. Based on the scores, matching 1 to A and 4 to B gives the highest reward. 
+
 %\added[id=ZJ]{TODO: add the Tab for scores.}
 
 
@@ -922,15 +936,17 @@ HMLC is rather sophisticated but it was found to be very important in our experi
 %In this section we further show the advantage of using HMLC by comparing it to several straight-forward alternatives.
 
 
- \myheading{Fixed Order Matching.} Perhaps the most straight matching strategy is to machine the output of \S2N sequentially to the target segments following some natural order, \emph{e.g.}, from left to right. For example, for the case shown in Fig.~\ref{fig:HMLC_example}, fixed matching assigns 1 to A and 2 to B.
+ \myheading{Fixed Order Matching.} Perhaps the most straight matching strategy is to machine the output of \S2N sequentially to the target segments following some natural order, \emph{e.g.}, from left to right. We denote this matching \emph{FIX}. For example, for all the cases shown in Fig.~\ref{fig:HMLC-illurstration}, fixed matching simply assigns 1 to A and 2 to B regardless of their positions relatives to the target segments.  The limitation of the fixed order matching is that it might incorrectly assign candidate hypotheses to ground-truth segments when the decoding process produces false positives as shown in Figure~\ref{fig:FixM}. Additionally, it will enforce a strong location bias that limits its generalization abilities. For a exactly video with 2 segments. The order of A and B should not make a difference.
  
- \added[id=MH]{Need to explain what fixed order matching is. This section also contains incorrect reference. Check.} The limitation of the fixed order matching is that it might incorrectly assign candidate hypotheses to ground-truth segments when the decoding process produces false positives (output at 1st by the 2 has higher overlap with the first ground truth) or false negatives (output@2 but has high overlap with the third ground truth) (as shown in figureX ). Additionally, it will enforce a strong location bias that limits its generalization abilities. For a exactly video with 2 segments. The order of A and B should not make a difference.
+% \added[id=MH]{Need to explain what fixed order matching is. This section also contains incorrect reference. Check.} 
  
- \added[id=MH]{Need to explain Top K and greedy matching.}
- 
-\myheading{Top K Matching} This is by zeroing out the first. However, deciding the number of K is not trivial, additionally, as shown in Figure~\ref{fig:TopK3M}, it may cause significant change of the localization losses (by matching  1-C), which causes instabilities in training.
 
-\myheading{Greedy Matching}: this is by zeroing out the first and second item. It shares the same shortcomings as the TopK matching. Additionally, tt doesn't enforce an order.
+ 
+% \added[id=MH]{Need to explain Top K and greedy matching.}
+ 
+\myheading{Top K Matching} Top K matching (denoted as \emph{TopK}) is a simplified version of HMLC by zeroing out the first item in the triplet cost. \emph{i.e.},  only the first K outputs were considered in the matching strategy, then it decides  which target to match to based the L1 distance.  However, deciding the number of K is not trivial, additionally, as shown in Figure~\ref{fig:TopK3M}, it may cause significant change of the localization losses (by matching  1-C), which causes instabilities in training.
+
+\myheading{Greedy Matching}: Another strategy for matching is to simply match the generated segments to the closest targets solely based on their distance. We denote this strategy as $Greedy$. This is by zeroing out the first and second item in the triplet cost of HMLC. Despite that it shares the same shortcomings as the TopK matching, it also does not enforce an order.
 
 
 We will show more emperical results in Sec~\ref{sec:improved-S2N-exp}.  
@@ -1006,7 +1022,8 @@ In this section we show that \S2N achieves state of the art performance on multi
 We used the same architecture in all experiments even though better results can likely be achieved by tuning the model to fit specific problems. 
 %there are likely some gains to be obtained by tuning the model to fit specific problems. 
 %We felt that having the same model operate on all the problems would make the main message of the paper stronger. As a result, 
-Unless specified otherwise, the encoder is a two layer bi-directional GRU with 512 hidden units with dropout rate 0.5, the GRU module in SDU is one-directional with 1024 hidden units. All the models are trained with the Adam optimizer~\cite{kingma2014adam} for 50 epochs with an initial learning rate of 0.0001, which was decreased by a factor of 10 when the training performance plateaued, batch size of 32 and $L_2$ gradient clipping of 1.0. The trade-off factor $\alpha$ in Eq.~(\ref{eq:loss}) is set to ensure that $\mL_{loc}$ does not dominate in the total loss. \added[id=ZJ]{Throughout all the experiment we set $\alpha$ to be X}.
+Unless specified otherwise, the encoder is a two layer bi-directional GRU with 512 hidden units with dropout rate 0.5, the GRU module in SDU is one-directional with 1024 hidden units. All the models are trained with the Adam optimizer~\cite{kingma2014adam} for 50 epochs with an initial learning rate of 0.0001, which was decreased by a factor of 10 when the training performance plateaued, batch size of 32 and $L_2$ gradient clipping of 1.0. The trade-off factor $\alpha$ in Eq.~(\ref{eq:loss}) is set to ensure that $\mL_{loc}$ does not dominate in the total loss. 
+%\added[id=ZJ]{Throughout all the experiment we set $\alpha$ to be X}.
 A weight adjustment for the score predictor is also used if necessary to account for the imbalance between the positive and negative samples. 
 
 % The code is publicly available at \url{https://www3.cs.stonybrook.edu/~cvl/projects/wei2018s2n/S2N_NIPS2018s.html}
@@ -1021,15 +1038,15 @@ For each video, we extracted I3D features~\cite{carreira2017quo} on RGB frames. 
 
 \myheading{Evaluation metric.} We followed the commonly used F1-scores to evaluate the similarity between predicted highlight segments and ground truth segments. 
 
-\myheading{Baseline.} We compared \S2N with three state-of-the-art video highlight detection algorithms on the VTW dataset: DPP-LSTM~\cite{zhang2016video}, Hierarchical-RNN~\cite{zhao2017hierarchical}, and retrospective sequence-to-sequence model~\cite{zhang2018retrospective}. Both~\cite{zhao2017hierarchical} and~\cite{zhang2018retrospective} adopt a hierarchical model to extract features from videos: first the original video is divided into multiple segments, within each segment, an RNN-based encoder is used to extract features for the segment; then a higher level RNN is used to incorporate segment-wise features. However, these methods require additional parameters and increase the probability of overfitting. In our method, we ignore hierarchical structure and simply use the segment-wised feature extracted from pre-trained networks as input to our system.
+\myheading{Baseline.} We compared \S2N with three state-of-the-art video highlight detection algorithms on the VTW dataset: DPP-LSTM~\cite{zhang2016video}, Hierarchical-RNN~\cite{zhao2017hierarchical}, and retrospective sequence-to-sequence model~\cite{zhang2018retrospective}. Both~\cite{zhao2017hierarchical} and~\cite{zhang2018retrospective} adopt a hierarchical model to extract features from videos: first the original video is divided into multiple segments, within each segment, an RNN-based encoder is used to extract features for the segment; then a higher level RNN is used to incorporate segment-wise features. However, these methods require additional parameters and increase the probability of overfitting. In our method, for simplicity, we ignore hierarchical structure and use the segment-wised feature extracted from pre-trained networks as input to our system. As we will show next, \S2N is quite robust to different features.
 
 \myheading{Results.} Tab~\ref{tab:highlight} shows the F1 scores of the proposed \S2N and other methods. As can be seen, \S2N achieves the best performance. 
 
 
-\myheading{Ablation Study.} To understand the importance of the EMD loss, we performed some controlled experiments by replacing the EMD loss in \S2N with other alternatives. We compare with the cross entropy loss and the $L_2$ loss. \textcolor{red}{need some explaination about how to compute those losses.} Clearly, the proposed EMD loss is able to guide the pointer network to point to the correct starting and end positions.
+\myheading{Ablation Study.} To understand the importance of the EMD loss, we performed some controlled experiments by replacing the EMD loss in \S2N with other alternatives. We compare with the cross entropy loss and the $L_2$ loss discussed in~\ref{sec:loss_function}.  Clearly, the proposed EMD loss is able to guide the pointer network to point to the correct starting and end positions.
 
-\added[id=ZJ]{We have also experimented the pointer module instead of Eq.~\ref{eqn:eq1}, we localize the boundary based on the inputs, following the implementation in~\cite{vinyals2015pointer}: $b_n =  \myargmax{i} g(\h_n, \x_i)$, but we got significantly worse results.
- } 
+We have also experimented with the original pointing mechanism proposed in the~\cite{vinyals2015pointer}. Specifically, rather than using Eq.~\ref{eqn:eq1} that localizes the boundaries based on the correlation between hidden states and the decoding states, the implementation in~\cite{vinyals2015pointer} are based on the input features: $b_n =  \myargmax{i} g(\h_n, \x_i)$. We got significantly worse results following~\cite{vinyals2015pointer}. This suggests that compared to the input feature $\x_i$, the hidden state $\h_i$ captures more progressive information, which is crucial for \S2N.
+ 
 
 \begin{table}
 \caption{F1 scores (\%) of various video highlight detection methods on the VTW dataset\label{tab:highlight}}
@@ -1038,7 +1055,7 @@ For each video, we extracted I3D features~\cite{carreira2017quo} on RGB frames. 
  \toprule
  DPP-LSTM \cite{zhang2016video} & H-RNN~\cite{zhao2017hierarchical} & re-seq2seq~\cite{zhang2018retrospective} & \S2N (proposed)  \\
  \midrule
-44.3 & 46.9 & 48.0 & 48.8 \\
+44.3 & 46.9 & 48.0 & \textbf{48.8} \\
  \bottomrule
  \end{tabular}
  \end{table}
@@ -1051,7 +1068,7 @@ For each video, we extracted I3D features~\cite{carreira2017quo} on RGB frames. 
  \toprule
  Cross Entropy Loss & L2 Loss & EMD Loss (proposed)  \\
  \midrule
-41.5 & 46.5 & 48.8 \\
+41.5 & 46.5 & \textbf{48.8} \\
   \bottomrule
  \end{tabular}
  \end{table}
@@ -1064,10 +1081,9 @@ Automatic video summarization provides a method for humans to browse and analyze
 \myheading{Dataset.} We performed experiments on SumMe~\cite{gygli2014creating}, a standard benchmark for video summarization. SumMe consists of 25 user videos covering various topics such as holidays and sports. Each video in SumMe ranges from 1 to 6 minutes and is annotated by 15 to 18 people (thus there are multiple ground truth summaries for each video). We treated each annotation separately and considered all of them ground truth. In this way, \S2N was trained to model multiple segment combinations to account for different user annotations (around~450 annotated video instances). We used the  canonical setting suggested in~\cite{zhang2016video} for evaluation: we used the standard 5-fold cross validation (5FCV), i.e., 80\% of videos are for training and the rest for testing.
 
 
-\myheading{Implementation.} Similar as video highlight detection task, instead of using a hierarchical model to extract segment-wise features, we directly extract I3D features~\cite{carreira2017quo} for the videos without fine-tuning.  Each video is split into overlapping chunks of 800 frames, subsampled every 8 frames as inputs. We limit the maximum number of output segments to 8. 
-% \red{why use C3D features here and I3D for the highlighting? Need one or two sentence justification.}
+\myheading{Implementation.} Similar as video highlight detection task, instead of using a hierarchical model to extract segment-wise features, we directly extract I3D features~\cite{carreira2017quo} for the videos without fine-tuning.  Each video is split into overlapping chunks of 800 frames, subsampled every 8 frames as inputs. We limit the maximum number of output segments to 8. % \red{why use C3D features here and I3D for the highlighting? Need one or two sentence justification.}
 
-\added[id=ZJ]{Try to use the new algorithm}
+%\added[id=ZJ]{Try to use the new algorithm}
 To generate a summary, we followed the standard practice~\cite{zhang2016video, zhou2017deep} and 
 selected segments based on their scores by maximizing the total scores while ensuring that the length of the summary does not exceed a limit, which was usually 15\% of the video duration. The maximization step was essentially the 0/1 Knapsack problem. Due to the limited amount of training data in SumMe, we trained each split for exactly 10 epochs, and we report in this paper the performance based on the last epoch. 
 
@@ -1080,7 +1096,7 @@ selected segments based on their scores by maximizing the total scores while ens
 % image based summary~\cite{khosla2013large}, Online sparse coding based summary~\cite{zhao2014quasi}, Co-archetypal~\cite{song2015tvsum},
 \myheading{Baselines.} We compared \S2N to multiple state-of-the-art video summary algorithms including interestingness-based summary~\cite{gygli2014creating}, submodularity-based summary~\cite{gygli2015video}, and the recent deep learning based models,  including:  DPP-LSTM~\cite{zhang2016video} (based on LSTM and a determinantal point processes~\cite{gong2014diverse}), GAN\textsubscript{sup}~\cite{mahasseni2017unsupervised} ( based on GAN~\cite{goodfellow2014generative} with extra supervision),  and DR-DSN\textsubscript{sup}~\cite{zhou2017deep} (based on reinforcement learning with supervision). 
 
-\myheading{Results.} As shown in Table~\ref{results:vssum}, \S2N outperforms all other methods. \S2N is designed to capture all the information needed for generating good summaries. We also visualize an example of the summarization in Figure~\ref{fig:vis_vs}. 
+\myheading{Results.} As shown in Table~\ref{results:vssum}, \S2N outperforms all other methods. \S2N is designed to capture all the information needed for generating good summaries. We also visualize an example of the summarization in Figure~\ref{fig:vis_vs}. We also have experimented under the same setting using C3D features~\cite{tran2015learning} and got the F1 score of $43.1$, which also outperforms the baselines, showing that \S2N is quite robust to the choices of features. 
 
 \begin{table*}
 \small
@@ -1147,7 +1163,7 @@ Temporal Action Proposal (TAP) generation, akin to object proposal generation fo
 \myheading{Metrics}. We evaluated \S2N under the multiple metrics:
 
 \begin{itemize}
-	\item \textit{AR-N}~\cite{yu2015fast, lin2018BSN}\added[id=ZJ]{and more}: this measures the average recall (AR) as a function of number of proposals per video. Note that the numbers of retrieved proposals ($N$) for all the test videos are the same regardless of their lengths. As AR-N was widely used in multiple previous works, in this paper we make it our primary metric. Additionally, following~\cite{Gao_2017_ICCV}, we also use the following metrics to further investigate the performance of \S2N.
+	\item \textit{AR-N}~\cite{yu2015fast, lin2018BSN,escorcia2016daps,buch2017end}: this measures the average recall (AR) as a function of number of proposals per video. Note that the numbers of retrieved proposals ($N$) for all the test videos are the same regardless of their lengths. As AR-N was widely used in multiple previous works, in this paper we make it our primary metric. Additionally, following~\cite{Gao_2017_ICCV}, we also use the following metrics to further investigate the performance of \S2N.
 	\item \textit{AR-F}~\cite{Gao_2017_ICCV}: this measures the average recall (AR) as a function of proposal frequency ($F$), which denotes the number of retrieved proposals per second for a video. For a video of length $L_i$ seconds and proposal frequency of $F$, the retrieved proposal number of this video is $N_i = F\times L_i$. 
 	\item \textit{Recall@F-tIoU}~\cite{Gao_2017_ICCV}: this metric measures the recall rate at proposal frequency $F$ with regard to different tIoUs. In the evaluation, we set $F=1.0$ following~\cite{Gao_2017_ICCV}.
 	\item \textit{Recall@N-tIoU}~\cite{Gao_2017_ICCV}: this metric measures the recall rate at number of retrieved proposals with regard to different tIoUs. 
@@ -1255,7 +1271,7 @@ We executed our analysis on the error profile of the top-5G predictions, where G
 \setlength{\tabcolsep}{15pt}
 \centering
 \caption{Comparison between \S2N with other state-of-the-art proposal generation
-methods on THUMOS14 in terms of Average Recall at N (AR-N). Methods based on I3D features outperform the ones based on C3D features. Using Beam Search also improves the overall performance. \label{results:proposal_ARAN}\added[id=ZJ]{Add Jia Deng's work}}
+methods on THUMOS14 in terms of Average Recall at N (AR-N). Methods based on I3D features outperform the ones based on C3D features. Using Beam Search also improves the overall performance. \label{results:proposal_ARAN}}
 %\begin{tabularx}{\textwidth}{ X  X  X  X  X  X  X}
 \begin{tabular}{llrrrrrr}	
 \toprule
@@ -1274,13 +1290,13 @@ C3D & \S2N  & 37.06 & 43.04 & 49.18 & - & - \\
 C3D & \S2N-Beam  & \textbf{36.80} & \textbf{44.23} & \textbf{52.11} & \textbf{59.59} & \textbf{64.46} \\
 \midrule
 Flow & TURN~\cite{Gao_2017_ICCV}  & 21.86 & 31.89 &  43.02 &  57.63 & 64.17 \\
-\midrule
-I3D \red{which 2stream feat?} & TAG~\cite{zhao2017temporal} & 18.55 & 29.00 & 39.61 & - & - \\
-I3D & BSN + Greedy-NMS~\cite{lin2018BSN} & 35.41 & 43.55 & 52.23 & 61.35 & 65.10 \\
-I3D & BSN + Soft-NMS~\cite{lin2018BSN} & 37.46 & 46.06 & 53.21 & 60.64 & 64.52 \\
-\midrule
+%\midrule
+Two-stream~\cite{Simonyan-Zisserman-NIPS14} & TAG~\cite{zhao2017temporal} & 18.55 & 29.00 & 39.61 & - & - \\
+Two-stream~\cite{xiong2016cuhk} & BSN + Greedy-NMS~\cite{lin2018BSN} & 35.41 & 43.55 & 52.23 & 61.35 & 65.10 \\
+Two-stream~\cite{xiong2016cuhk} & BSN + Soft-NMS~\cite{lin2018BSN} & 37.46 & 46.06 & 53.21 & 60.64 & 64.52 \\
+%\midrule
 %2-Stream & BSN + Greedy-NMS~\cite{lin2018BSN} & 35.41 & 43.55 & 52.23 & 61.35 & 65.10 \\
-I3D & \S2N-Beam & \textbf{41.29} & \textbf{51.96} & \textbf{59.19} & \textbf{66.01} & \textbf{69.11} \\
+I3D~\cite{carreira2017quo} & \S2N-Beam & \textbf{41.29} & \textbf{51.96} & \textbf{59.19} & \textbf{66.01} & \textbf{69.11} \\
 \bottomrule
 %\end{tabularx}
 \end{tabular}
@@ -1295,20 +1311,21 @@ In this section, we will describe several techniques to further advance the perf
 \myheading{Using more sophisticated features.} So far, we have used \S2Ns with C3D features, so the resulting \S2N models are directly comparable to other existing methods that also used C3D features. As we have shown in the previous section, \S2Ns with C3D features have achieved the state-of-the-art performance, outperforming other methods. However, the underlying C3D features are no longer the state-of-the-art for human action recognition; there are more recent and advanced features such as I3D~\cite{carreira2017quo}. In this section, we experiment \S2N with I3D, aiming to advance the state-of-the-art performance even further. I3D~\cite{carreira2017quo} is a two-stream model that is built upon image classification architectures~\cite{szegedy2015going} where filters and inflated from 2D to 3D, leading to very deep, naturally spatio-temporal models. We used the  same model of~\cite{carreira2017quo} pre-trained on the Kinetics dataset~\cite{kay2017kinetics} for action classification. This model inputs a stack of 64 RGB/optical flow frames and extracts a 1024-dimensional feature vectors. We extracted both RGB and optical flow features for each frame.  We then performed PCA to reduce the dimensionality. The input to \S2N is the concatenation of  two 500-dimensional feature maps. 
 
 \myheading{Extending the range of recall values with beam search.} 
-\added[id=ZJ]{By looking into the outputs of \S2N, we found that it tends to generate multiple identical outputs. This is due to the fact that in training \S2N, HMLC only penalizes the offsets of detections that are matched with ground truth. Over different runs, different steps might got matched to the same ground truth.}
 
-\red{Need to explain this problem better. Why does it only generate a  limited number of proposals?}
-One caveat of \S2N is that it only generates a limited number of proposals (generally $\leq 300$), which makes it less competitive for situations that more proposals are allowed. To address the problem of generating insufficient proposals, during inference we propose a simple but effective modification by using \emph{Beam Search}: for each decoding step, instead of only generating one proposal $S_n$ from the maximum response locations(Eq.~\ref{eqn:eq1}), here we make \S2N to N proposals from the top N maximum response locations. The score in a $S_n = (b_n, d_n, c_n)$, which previously was only determined by the output of the score predictor branch (Sec.~\ref{sec:SDU}) is now a product of the score predictor and the response scores for the starting and ending position, \emph{i.e.}:
+
+%\red{Need to explain this problem better. Why does it only generate a  limited number of proposals?}
+One caveat of \S2N is that it only generates a limited number of proposals (generally $\leq 300$). This is because in training, over different iterations, detections from different decoding steps might be assigned to the same ground truth, based on the HMLC strategy. However, HMLC only penalizes the offsets of the detections that are matched with ground truth, there is no penalty forcing the false positives to be far away from the true positives. The matching and the loss function cause \S2N to output repetitive detections that maximally covers the target segments (an example is shown in Fig.~\ref{fig:HMLC_r3}).  This is fine for tasks such as video highlighting or video summarization tasks. However, it makes \S2N less competitive for temporal action proposal tasks in which more proposals are allowed. 
+To address the problem of generating insufficient proposals, during inference we propose a simple but effective modification by using \emph{Beam Search}: for each decoding step, instead of only generating one proposal $S_n$ from the maximum response locations(Eq.~\ref{eqn:eq1}), here we make \S2N to N proposals from the top N maximum response locations. The score in a $S_n = (b_n, d_n, c_n)$, which previously was only determined by the output of the score predictor branch (Sec.~\ref{sec:SDU}) is now a product of the score predictor and the response scores for the starting and ending position, \emph{i.e.}:
 \begin{equation}
     \Bar{c}_n = c_n \cdot \sigma (g (\h_n, \e_{b_n})) \cdot \sigma(g(\h_n, \e_{d_n}))
 \end{equation}
 where $g(\cdot, \cdot)$ is defined in Eq.~\ref{eqn:eq2} and $\sigma(\cdot)$ is the softmax function.
 
-In this way, we can generate N times more proposals than previous \S2N. We denote \S2N with this modification as \emph{S2N-Beam}.
+In this way, we can generate N times more proposals than previous \S2N. We denote \S2N with this modification as \emph{S2N-Beam}. We fix N to 10 for all the experiments.
 
 
 \myheading{Results.} 
-Table~\ref{results:proposal_ARAN} shows a complete comparison between variants of \S2N and the current state-of-the-art algorithms under the AR-N metric. In addition to the set of baselines described in Sec.~\ref{sec:exp_THUMOS}, we also include Boundary-Sensitive Network (BSN)~\cite{lin2018BSN}, a recently published multiple-stage pipeline that detects boundaries and groups them as proposals. As shown in Table~\ref{results:proposal_ARAN}, the \S2N methods significantly outperform the others. Notably, on average the \S2N-Beam with I3D features surpasses the BSN method by 5 percent.
+Table~\ref{results:proposal_ARAN} shows a complete comparison between variants of \S2N and the current state-of-the-art algorithms under the AR-N metric. In addition to the set of baselines described in Sec.~\ref{sec:exp_THUMOS}, we also include Boundary-Sensitive Network (BSN)~\cite{lin2018BSN}, a recently published multiple-stage pipeline that detects boundaries and groups them as proposals. As shown in Table~\ref{results:proposal_ARAN}, with the same features, the \S2N methods significantly outperform the others. Notably, on average the \S2N-Beam with I3D features surpasses the BSN method by 5 percent.
 
 Figure~\ref{fig:proposal-2stream} plots the entire performance curves of several methods: BSN, S2N-C3D, S2N-Beam-C3D, and S2N-Beam-I3D. In addition to the performance curves under the AR-N metric (Figure~\ref{fig:proposal-2stream}a), this figure also shows the performance curves under other metrics: AR-F, Recall@F-1.0 and Recall@N=1000. As shown in figure, using beam search (\S2N-Beam) improves performance especially when proposal frequency is high.
 
@@ -1645,7 +1662,10 @@ This project was partially supported by NSF-CNS-1718014, NSF-IIS-1763981, NSF-II
 %\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
 % or if you just want to reserve a space for a photo:
 
- \begin{IEEEbiography}[{\includegraphics[width=1in,height=1.2in,clip,keepaspectratio]{figures/biograph/MinhHoaiNguyen_headshot_2017_sm.jpg}}]{Zijun Wei}
+ \begin{IEEEbiography}[{\includegraphics[width=1in,height=1.2in,clip,keepaspectratio]{figures/biograph/ZijunWei-Head-2017-sm.jpg}}]{Zijun Wei} received a Bachelor of Network Engineering from Nanjing University of Science and Technology in 2011 and a Master of Robotics from Carnegie Mellon University in 2013. He is currently a PhD candidate at the Department of Computer Science, Stony Brook University. His research focuses on visual saliency and human preference modeling. 
+\end{IEEEbiography}
+
+ \begin{IEEEbiography}[{\includegraphics[width=1in,height=1.2in,clip,keepaspectratio]{figures/biograph/MinhHoaiNguyen_headshot_2017_sm.jpg}}]{Minh Hoai}
 is an Assistant Professor of Computer Science at Stony Brook University. He received a Bachelor of Software Engineering from the University of New South Wales in 2005 and a Ph.D. in Robotics from Carnegie Mellon University in 2012. His research interests are in computer vision and machine learning, especially human action and activity recognition and prediction. 
 \end{IEEEbiography}
 
@@ -1657,9 +1677,7 @@ Biography text here.
 % insert where needed to balance the two columns on the last page with
 % biographies
 %\newpage
- \begin{IEEEbiography}[{\includegraphics[width=1in,height=1.2in,clip,keepaspectratio]{figures/biograph/MinhHoaiNguyen_headshot_2017_sm.jpg}}]{Minh Hoai}
-is an Assistant Professor of Computer Science at Stony Brook University. He received a Bachelor of Software Engineering from the University of New South Wales in 2005 and a Ph.D. in Robotics from Carnegie Mellon University in 2012. His research interests are in computer vision and machine learning, especially human action and activity recognition and prediction. 
-\end{IEEEbiography}
+
 
 \begin{IEEEbiographynophoto}{Jane Doe}
 Biography text here.
